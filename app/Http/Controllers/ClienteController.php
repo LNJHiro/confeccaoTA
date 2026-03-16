@@ -7,33 +7,61 @@ use App\Models\Cliente;
 
 class ClienteController extends Controller
 {
+
     public function index()
     {
-        $clientes = Cliente::all(); // busca todos os clientes
+        $clientes = Cliente::all();
         return view('clientes.index', compact('clientes'));
     }
-    
+
     public function create()
     {
-        return view('clientes.create'); // mostra o formulário de criação de cliente
+        return view('clientes.create');
     }
 
-    //Recebe os dados do formulário e salva no banco
     public function store(Request $request)
     {
-        //1º Validação simples para evitar dados vazios ou duplicados
         $request->validate([
-            'nome' => 'required|string|max:255', // nome é obrigatório e deve ser único na tabela clientes
-            'cpf' => 'required|string|unique:clientes', // cpf é obrigatório e deve ser único na tabela clientes
-            'email' => 'required|email|unique:clientes', // email é obrigatório, deve ser um email válido e único
-            'telefone' => 'required|string', // telefone é obrigatório e deve ser único
-            'endereco' => 'required|string', // endereço é obrigatório
+            'nome' => 'required|string|max:255',
+            'cpf' => 'required|string|unique:clientes',
+            'email' => 'required|email|unique:clientes',
+            'telefone' => 'required|string',
+            'endereco' => 'required|string'
         ]);
 
-        //2º Salva o novo cliente
         Cliente::create($request->all());
 
-        //3º Redireciona de volta para a lista de clientes com uma mensagem de sucesso
-        return redirect()->route('clientes.index')->with('success', 'Cliente criado com sucesso!');
+        return redirect()->route('clientes.index')
+        ->with('success','Cliente criado com sucesso!');
     }
-}   
+
+    public function edit(Cliente $cliente)
+    {
+        return view('clientes.edit', compact('cliente'));
+    }
+
+    public function update(Request $request, Cliente $cliente)
+    {
+        $request->validate([
+            'nome' => 'required',
+            'cpf' => 'required',
+            'email' => 'required|email',
+            'telefone' => 'required',
+            'endereco' => 'required'
+        ]);
+
+        $cliente->update($request->all());
+
+        return redirect()->route('clientes.index')
+        ->with('success','Cliente atualizado!');
+    }
+
+    public function destroy(Cliente $cliente)
+    {
+        $cliente->delete();
+
+        return redirect()->route('clientes.index')
+        ->with('success','Cliente excluído!');
+    }
+
+}

@@ -14,6 +14,7 @@ class Pedido extends Model
         'produto',
         'quantidade',
         'data_pedido',
-        'status'
+        'status',
+        'observacao'
     ];
 }

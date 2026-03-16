@@ -3,57 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estoque</title>
+    <title>Document</title>
 </head>
 <body>
-    <h1>Novo Produto no Estoque</h1>
+
+<h1>Novo Produto no Estoque</h1>
 
 <a href="{{ route('estoques.index') }}">Voltar</a>
 
 <form action="{{ route('estoques.store') }}" method="POST">
-    @csrf
 
-    <div>
-        <label>Produto</label>
-        <input type="text" name="produto" required>
-    </div>
+@csrf
 
-    <div>
-        <label>Código</label>
-        <input type="text" name="codigo" required>
-    </div>
+<input type="text" name="produto" placeholder="Produto">
 
-    <div>
-        <label>Quantidade</label>
-        <input type="number" name="quantidade" required>
-    </div>
+<input type="text" name="codigo" placeholder="Código">
 
-    <div>
-        <label>Preço</label>
-        <input type="number" step="0.01" name="preco" required>
-    </div>
+<input type="number" name="quantidade" placeholder="Quantidade">
 
-    <div>
-        <label>Tamanho</label>
-        <input type="text" name="tamanho">
-    </div>
+<input type="text" name="preco" placeholder="Preço">
 
-    <div>
-        <label>Cor</label>
-        <input type="text" name="cor">
-    </div>
+<input type="text" name="tamanho" placeholder="Tamanho">
 
-    <button type="submit">Salvar</button>
+<input type="text" name="cor" placeholder="Cor">
+
+<button type="submit">Salvar</button>
+
 </form>
-
-@if ($errors->any())
-<div style="color:red;">
-    <ul>
-        @foreach ($errors->all() as $erro)
-            <li>{{ $erro }}</li>
-        @endforeach
-    </ul>
-</div>
-@endif
+    
 </body>
 </html>

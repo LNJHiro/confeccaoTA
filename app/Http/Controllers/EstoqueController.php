@@ -2,36 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Estoque;
 use Illuminate\Http\Request;
+use App\Models\Estoque;
 
 class EstoqueController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
-    $estoques = Estoque::all();
-    return view('estoques.index', compact('estoques'));
+        $estoques = Estoque::all();
+        return view('estoques.index', compact('estoques'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('estoques.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
-            'produto' => 'required|string|max:255',
-            'codigo' => 'required|unique:estoques',
+            'produto' => 'required',
+            'codigo' => 'required',
             'quantidade' => 'required|integer',
             'preco' => 'required|numeric',
             'tamanho' => 'required',
@@ -40,39 +32,34 @@ class EstoqueController extends Controller
 
         Estoque::create($request->all());
 
-        return redirect()->route('estoques.index')
-            ->with('success', 'Produto adicionado ao estoque!');
+        return redirect()->route('estoques.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Estoque $estoque)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Estoque $estoque)
     {
-        //
+        return view('estoques.edit', compact('estoque'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Estoque $estoque)
     {
-        //
+        $request->validate([
+            'produto' => 'required',
+            'codigo' => 'required',
+            'quantidade' => 'required|integer',
+            'preco' => 'required|numeric',
+            'tamanho' => 'required',
+            'cor' => 'required'
+        ]);
+
+        $estoque->update($request->all());
+
+        return redirect()->route('estoques.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Estoque $estoque)
     {
-        //
+        $estoque->delete();
+
+        return redirect()->route('estoques.index');
     }
 }

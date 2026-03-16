@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Fornecedor;
 use Illuminate\Http\Request;
+use App\Models\Fornecedor;
 
 class FornecedorController extends Controller
 {
+
     public function index()
     {
         $fornecedores = Fornecedor::all();
@@ -22,34 +23,45 @@ class FornecedorController extends Controller
     {
         $request->validate([
             'nome' => 'required',
-            'email' => 'required|email',
+            'cnpj' => 'required|unique:fornecedores',
             'telefone' => 'required',
-            'endereco' => 'required',
-            'cnpj' => 'required|unique:fornecedores' // CNPJ é obrigatório e deve ser único na tabela fornecedores
+            'email' => 'required|email',
+            'endereco' => 'required'
         ]);
 
         Fornecedor::create($request->all());
 
-        return redirect()->route('fornecedores.index');
+        return redirect()->route('fornecedores.index')
+        ->with('success','Fornecedor cadastrado!');
     }
 
-    public function show(Fornecedor $fornecedor)
+    public function edit(Fornecedor $fornecedore)
     {
-        return view('fornecedores.show', compact('fornecedor'));
+        return view('fornecedores.edit', ['fornecedor' => $fornecedore]);
     }
 
-    public function edit(Fornecedor $fornecedor)
+    public function update(Request $request, Fornecedor $fornecedore)
     {
-        //
+        $request->validate([
+            'nome' => 'required',
+            'cnpj' => 'required',
+            'telefone' => 'required',
+            'email' => 'required|email',
+            'endereco' => 'required'
+        ]);
+
+        $fornecedore->update($request->all());
+
+        return redirect()->route('fornecedores.index')
+        ->with('success','Fornecedor atualizado!');
     }
 
-    public function update(Request $request, Fornecedor $fornecedor)
+    public function destroy(Fornecedor $fornecedore)
     {
-        //
+        $fornecedore->delete();
+
+        return redirect()->route('fornecedores.index')
+        ->with('success','Fornecedor removido!');
     }
 
-    public function destroy(Fornecedor $fornecedor)
-    {
-        //
-    }
 }

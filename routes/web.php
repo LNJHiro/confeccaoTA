@@ -18,6 +18,9 @@ use App\Http\Controllers\FornecedorController;
 // Importa o controller de estoques
 use App\Http\Controllers\EstoqueController;
 
+// Importa o controller de produtos
+use App\Http\Controllers\ProdutoController;
+
 
 // Rota da página inicial (/)
 Route::get('/', function () {
@@ -53,6 +56,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('fornecedores', FornecedorController::class); // Cria todas as rotas de CRUD para fornecedores
 
     Route::resource('estoques', EstoqueController::class); // Cria todas as rotas de CRUD para estoques
+
+    Route::resource('produtos', ProdutoController::class); // Cria todas as rotas de CRUD para produtos
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit'); // Mostra a tela de editar perfil
 
